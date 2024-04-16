@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.navbar {
+    width: 100%;
+}
+
+.nav-link {
+    color: #171717;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+}
+
+.navbar-brand {
+    color: #f9900e;
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.important-text {
+    color: #171717;
+    font-size: 100px;
+    line-height: 0.9;
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    width: 90%;
+}
+* {
+    box-sizing: border-box;
+}
+
+:root {
+//--background-size: 50vw;
+    --background-size: unquote('min(100vw, 40em)');
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition-duration: 0.001s !important;
+    }
+}
+
+body {
+    min-height: 100vh;
+    margin: 2% auto 0 auto;
+    width: 90%;
+    max-width: 1125px;
+}
+
+a {
+    text-decoration: none;
+}
+
+@keyframes background-move {
+    0% { background-position: 0 0, 0 0; }
+    100% {
+        background-position: 100vw 0, 0 0;
+        background-position: unquote('max(100vw, 40em)')  0, 0 0;
+    }
+}
+
+input {
+    font-family: "Roboto", sans-serif !important;
+}
+
+#search__input {
+    padding: 15px;
+    font-size: 23px;
+    border: 1px solid #f9900e !important;
+}
+
+.search__form {
+    height: 0;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    margin-bottom: 30px;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+}
+
+.card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
+    font-size: 110px;
+}
+
+.card .card-statistic-3 .card-icon {
+    text-align: center;
+    line-height: 50px;
+    margin-left: 15px;
+    color: #000;
+    position: absolute;
+    right: -5px;
+    top: 20px;
+    opacity: 0.1;
+}
+
+.l-bg-orange {
+    background: linear-gradient(to right, #f9900e, #ffba56) !important;
+    color: #fff;
+}
+
+.price__box {
+    position: absolute;
+    bottom: 15px;
+    width: 100px;
+    right: 0;
+}
+
+.market__box {
+    position: absolute;
+    bottom: 15px;
+    width: 200px;
+    left: 25px;
+}
+
+.preloader {
+    /*фиксированное позиционирование*/
+    position: fixed;
+    /* координаты положения */
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* фоновый цвет элемента */
+    background: #e0e0e0;
+    /* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
+    z-index: 1001;
+}
+
+.preloader__row {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    margin-top: -35px;
+    margin-left: -35px;
+    text-align: center;
+    animation: preloader-rotate 2s infinite linear;
+}
+
+.preloader__item {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    background-color: #f9900e;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    animation: preloader-bounce 2s infinite ease-in-out;
+}
+
+.preloader__item:last-child {
+    top: auto;
+    bottom: 0;
+    animation-delay: -1s;
+}
+
+@keyframes preloader-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes preloader-bounce {
+
+    0%,
+    100% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+}
+
+.loaded_hiding .preloader {
+    transition: 0.3s opacity;
+    opacity: 0;
+}
+
+.loaded .preloader {
+    display: none;
+}
