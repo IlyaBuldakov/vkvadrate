@@ -2,8 +2,10 @@
 
 namespace App\Models\service;
 
+use App\Models\dto\ItemDto;
 use App\Models\dto\MarketplaceDto;
 use App\Models\service\market\SimaLandService;
+use App\Models\service\market\WildberriesService;
 
 /**
  * Сервис для поиска товаров.
@@ -16,7 +18,8 @@ class CommonSearchService
     {
         $this->marketplaceServices =
             [
-                new SimaLandService()
+                new SimaLandService(),
+                new WildberriesService(),
             ];
     }
 
@@ -28,7 +31,9 @@ class CommonSearchService
     {
         $items = [];
         foreach ($this->marketplaceServices as $marketplaceService) {
-            $items[] = new MarketplaceDto($marketplaceService->getLogoPath(), $marketplaceService->search($query));
+            $items[] = new MarketplaceDto(
+                $marketplaceService->getLogoPath(), $marketplaceService->search($query), $marketplaceService->getSign()
+            );
         }
         return $items;
     }
