@@ -23,27 +23,27 @@
                         <div class="col-lg-4 col-md-6" style="margin-bottom: 20px">
                             <div class="card rounded shadow-sm border-0 mb-5 h-100">
                                 <div class="card-body p-4"><img
-                                        src="{{ $item->photoUrl }}" alt=""
+                                        src="{{ $item->getPhotoUrl() }}" alt=""
                                         class="img-fluid d-block mx-auto mb-3">
-                                    <h5><a href="{{ $item->itemUrl }}"
-                                           class="text-dark">{{ $item->name }}</a></h5>
+                                    <h5><a href="{{ $item->getItemUrl() }}"
+                                           class="text-dark">{{ $item->getName() }}</a></h5>
                                     <p class="small text-muted font-italic">
                                         Текст для описания товара
                                     </p>
                                     <div class="market__box float-start">
                                         <div class="row">
                                             <img src="{{ $marketplacesResult->getLogoPath() }}"
-                                                 style="width: 70px !important; height: 45px !important;" alt="">
+                                                 style="width: 75px !important; height: 45px !important;" alt="">
                                             <div class="col">
                                                 <p class="small text-muted font-italic"
                                                    style="margin-top: 0.65rem !important">
-                                                    SimaLand
+                                                    {{ $marketplacesResult->getSign() }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="price__box float-end">
-                                        <h4>{{ $item->price }} ₽</h4>
+                                        <h4>{{ $item->getPrice() }} ₽</h4>
                                     </div>
                                 </div>
                             </div>
