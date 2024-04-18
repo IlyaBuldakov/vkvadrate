@@ -2,6 +2,8 @@
 
 namespace App\Models\service\market;
 
+use App\Models\dto\ItemDto;
+
 /**
  * Сервис для поиска товаров по маркетплейсу "Sima Land".
  */
@@ -11,9 +13,11 @@ class SimaLandService extends MarketplaceService
 
     private const SIMA_API_KEY_HEADER = 'x-api-key: 8de4c439f49586e3ac53a134cb0e15dd61825b1c0dba9d55b86087b28d4e4b799c6e1ecfc213f16b47b723f7e71157d71bdf909f1959c7e01b02d296f548ef20';
 
-    protected function getSign(): string
+    protected const LOGO_EXTENSION = '.png';
+
+    public function getSign(): string
     {
-        return 'simaland';
+        return 'SimaLand';
     }
 
     /**
@@ -22,7 +26,7 @@ class SimaLandService extends MarketplaceService
      */
     public function search(string $query): array
     {
-        $curl = curl_init(self::SEARCH_PATH . "&q=$query");
+        $curl = curl_init(self::SEARCH_PATH . "&q=$query&per-page=10");
 
         curl_setopt($curl, CURLOPT_HTTPHEADER,
             [
@@ -34,6 +38,13 @@ class SimaLandService extends MarketplaceService
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $jsonObject = json_decode(curl_exec($curl));
-        return $jsonObject->items;
+
+        return array_map(function ($rawItem) {
+            return new ItemDto(
+                $rawItem->name,
+                'https://www.sima-land.ru/' . $rawItem->itemUrl,
+                $rawItem->photoUrl,
+                $rawItem->price);
+        }, $jsonObject->items);
     }
 }

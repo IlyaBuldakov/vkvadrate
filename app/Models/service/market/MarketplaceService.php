@@ -13,18 +13,13 @@ abstract class MarketplaceService
     private const LOGO_PATH = 'assets/img/market/';
 
     /**
-     * Стандартный формат логотипа.
-     */
-    private const LOGO_EXTENSION = '.png';
-
-    /**
      * Метод получения полного пути до логотипа.
      *
      * @return string Путь до логотипа.
      */
     public function getLogoPath(): string
     {
-        return self::LOGO_PATH . $this->getSign() . self::LOGO_EXTENSION;
+        return self::LOGO_PATH . $this->getSign() . static::LOGO_EXTENSION;
     }
 
     /**
@@ -32,7 +27,7 @@ abstract class MarketplaceService
      *
      * @return string Подпись (название) маркетплейса. Например, "wildberries".
      */
-    protected abstract function getSign(): string;
+    public abstract function getSign(): string;
 
     /**
      * Метод поиска подходящих товаров по текстовому запросу.
