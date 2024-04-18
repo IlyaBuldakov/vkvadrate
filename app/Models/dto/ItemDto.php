@@ -2,6 +2,9 @@
 
 namespace App\Models\dto;
 
+/**
+ * DTO для предмета (товара) маркетплейса.
+ */
 class ItemDto
 {
 

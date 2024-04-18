@@ -2,7 +2,6 @@
 
 namespace App\Models\service;
 
-use App\Models\dto\ItemDto;
 use App\Models\dto\MarketplaceDto;
 use App\Models\service\market\SimaLandService;
 use App\Models\service\market\WildberriesService;

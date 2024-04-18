@@ -2,6 +2,10 @@
 
 namespace App\Models\dto;
 
+/**
+ * DTO маркетплейса.
+ * Информация о маркетплейсе, которая должна находится на представлении.
+ */
 class MarketplaceDto
 {
     private string $logoPath;

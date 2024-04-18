@@ -4,6 +4,9 @@ namespace App\Models\service\market;
 
 use App\Models\dto\ItemDto;
 
+/**
+ * Сервис для поиска товаров по маркетплейсу "Wildberries".
+ */
 class WildberriesService extends MarketplaceService
 {
     private const SEARCH_PATH = "https://search.wb.ru/exactmatch/ru/common/v5/search?curr=rub&dest=-1257786";
