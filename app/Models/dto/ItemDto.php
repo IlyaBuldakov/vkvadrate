@@ -14,15 +14,15 @@ class ItemDto
 
     private string $photoUrl;
 
-    private int $price;
+    private string $price;
 
     /**
      * @param string $name
      * @param string $itemUrl
      * @param string $photoUrl
-     * @param int $price
+     * @param string $price
      */
-    public function __construct(string $name, string $itemUrl, string $photoUrl, int $price)
+    public function __construct(string $name, string $itemUrl, string $photoUrl, string $price)
     {
         $this->name = $name;
         $this->itemUrl = $itemUrl;
@@ -45,7 +45,7 @@ class ItemDto
         return $this->photoUrl;
     }
 
-    public function getPrice(): int
+    public function getPrice(): string
     {
         return $this->price;
     }
