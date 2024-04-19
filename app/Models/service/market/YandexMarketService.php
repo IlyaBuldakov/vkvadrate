@@ -57,33 +57,64 @@ class YandexMarketService extends MarketplaceService
                         let upperBound = count <= 10 ? count : 10;
 
                         for (let i = 0; i < 10; i++) {
-                            var elem = productSnippets[i].firstChild.firstChild.children;
 
-                            var imageParent = elem.item(0);
-                            var imageDivs = imageParent.firstChild.firstChild.children.item(0);
+                                var isFromWhiteBox = false;
 
-                            var titleParent = elem.item(1);
+                                var elem = productSnippets[i].firstChild.firstChild.children;
 
-                            var a = titleParent.firstChild.firstChild.firstChild;
-                            var itemUrl = a.href;
-                            var title = a.firstChild.innerHTML;
-
-                            var priceParent = elem.item(2);
-                            var price = priceParent.children.item(1).firstChild.firstChild.firstChild.firstChild.firstChild.children.item(1).firstChild.firstChild.innerHTML;
-
-                            var imageResult = imageDivs.children.item(0) === null ? 'empty' : imageDivs.children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).src;
-
-                            data.push(
-                                {
-                                    \"title\": title,
-                                    \"price\": price,
-                                    \"imageUrl\": imageResult,
-                                    \"itemUrl\": itemUrl
+                                if (elem === null) {
+                                    isFromWhiteBox = true;
+                                    elem = productSnippets[i].firstChild.children.item(1).children;
                                 }
-                            );
-                        }
 
-                            return data;
+                                if (!isFromWhiteBox) {
+
+                                    var imageParent = elem.item(0);
+
+                                    var imageDivs = imageParent.firstChild.firstChild.children.item(0);
+                                    var imageResult = imageDivs.children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).src
+
+                                    var titleParent = elem.item(1);
+                                    var a = titleParent.firstChild.firstChild.firstChild;
+                                    var itemUrl = a.href;
+                                    var title = a.firstChild.innerHTML;
+
+                                    var priceParent = elem.item(2);
+                                    var price = priceParent.children.item(1).firstChild.firstChild.firstChild.firstChild.firstChild.children.item(1).firstChild.firstChild.innerHTML;
+
+                                    data.push(
+                                    {
+                                         \"title\": title,
+                                         \"price\": price,
+                                         \"imageUrl\": imageResult,
+                                         \"itemUrl\": itemUrl
+                                    }
+                                    );
+                                } else {
+
+                                    var imageParent = elem.item(0);
+
+                                    var titleParent = elem.item(1);
+                                    var title = titleParent.firstChild.firstChild.firstChild.firstChild.innerHTML;
+                                    var itemUrl = productSnippets[i].firstChild.children.item(1).href;
+
+                                    var priceParent = elem.item(1);
+                                    var price = priceParent.firstChild.firstChild.firstChild.firstChild.innerHTML;
+
+                                    var imageDivs = imageParent.firstChild.firstChild.firstChild.children.item(1);
+                                    var imageResult = imageDivs.src;
+
+                                    data.push(
+                                    {
+                                         \"title\": title,
+                                         \"price\": price,
+                                         \"imageUrl\": imageResult,
+                                         \"itemUrl\": itemUrl
+                                     }
+                                    );
+                                }
+                        }
+                        return data;
                         ");
 
         $driver->quit();
