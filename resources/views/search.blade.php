@@ -53,4 +53,5 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/search.js') }}"></script>
 @endsection

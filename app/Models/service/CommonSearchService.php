@@ -5,6 +5,7 @@ namespace App\Models\service;
 use App\Models\dto\MarketplaceDto;
 use App\Models\service\market\SimaLandService;
 use App\Models\service\market\WildberriesService;
+use App\Models\service\market\YandexMarketService;
 
 /**
  * Сервис для поиска товаров.
@@ -18,7 +19,8 @@ class CommonSearchService
         $this->marketplaceServices =
             [
                 new SimaLandService(),
-                new WildberriesService(),
+                new YandexMarketService(),
+                new WildberriesService()
             ];
     }
 
