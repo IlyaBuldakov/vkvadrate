@@ -2,7 +2,10 @@
 
 namespace App\Models\service\market;
 
+use App\Models\dto\ItemDto;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Exception\NoSuchWindowException;
+use Facebook\WebDriver\Exception\SessionNotCreatedException;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -13,60 +16,85 @@ use GuzzleHttp\Client;
 class YandexMarketService extends MarketplaceService
 {
 
-    const SEARCH_PATH = "https://market.yandex.ru/search-redirect";
+    public const LOGO_EXTENSION = '.jpg';
 
-    private const XPATH_TITLE_QUERY = './/*[@data-auto=\'snippet-title\']';
+    private const SEARCH_PATH = "https://market.yandex.ru/search-redirect";
 
-    private const XPATH_PRICE_QUERY = './/*[@data-auto=\'snippet-price-current\']';
+    private const GECKO_EXE_PATH = '/snap/bin/geckodriver';
 
-    private const XPATH_IMAGE_QUERY = './/*[@data-zone-name=picture\'\']';
-
-    private const FIREFOX_SERVER_URL = 'http://localhost:4444';
-
-    private const FIREFOX_SERVER_EXE = 'C:\geckodriver.exe';
-
-    private const FIREFOX_EXE_URL = 'C:\Program Files\Mozilla Firefox\firefox.exe';
-
-    protected function getSign(): string
-    {
-        return 'yandexmarket';
-    }
-
-    public function search(string $query): array
+    public function __construct()
     {
         $desiredCapabilities = DesiredCapabilities::firefox();
         $desiredCapabilities->setCapability('acceptSslCerts', false);
 
         $firefoxOptions = new FirefoxOptions();
         $firefoxOptions->addArguments(['-headless']);
-        $firefoxOptions->setOption('binary', self::FIREFOX_EXE_URL);
 
         $desiredCapabilities->setCapability(FirefoxOptions::CAPABILITY, $firefoxOptions);
 
-        putenv('WEBDRIVER_FIREFOX_DRIVER=' . self::FIREFOX_SERVER_EXE);
+        putenv('WEBDRIVER_FIREFOX_DRIVER=' . self::GECKO_EXE_PATH);
 
-        $driver = RemoteWebDriver::create(self::FIREFOX_SERVER_URL, $desiredCapabilities);
+        define('DRIVER', FirefoxDriver::start($desiredCapabilities));
+    }
+
+    public function getSign(): string
+    {
+        return 'YandexMarket';
+    }
+
+    public function search(string $query): array
+    {
+        $driver = constant('DRIVER');
         $driver->get(self::SEARCH_PATH . "?text=$query");
 
-        $titles = $driver->findElements(WebDriverBy::xpath(self::XPATH_TITLE_QUERY));
-        $prices = $driver->findElements(WebDriverBy::xpath(self::XPATH_PRICE_QUERY));
-        $image = $driver->findElements(WebDriverBy::xpath(self::XPATH_IMAGE_QUERY));
+        $allProducts = $driver->executeScript("
+
+                        var productSnippets = document.querySelectorAll('[data-baobab-name=\"productSnippet\"]');
+
+                        var data = [];
+
+                        let count = productSnippets.length;
+                        let upperBound = count <= 10 ? count : 10;
+
+                        for (let i = 0; i < 10; i++) {
+                            var elem = productSnippets[i].firstChild.firstChild.children;
+
+                            var imageParent = elem.item(0);
+                            var imageDivs = imageParent.firstChild.firstChild.children.item(0);
+
+                            var titleParent = elem.item(1);
+
+                            var a = titleParent.firstChild.firstChild.firstChild;
+                            var itemUrl = a.href;
+                            var title = a.firstChild.innerHTML;
+
+                            var priceParent = elem.item(2);
+                            var price = priceParent.children.item(1).firstChild.firstChild.firstChild.firstChild.firstChild.children.item(1).firstChild.firstChild.innerHTML;
+
+                            var imageResult = imageDivs.children.item(0) === null ? 'empty' : imageDivs.children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).src;
+
+                            data.push(
+                                {
+                                    \"title\": title,
+                                    \"price\": price,
+                                    \"imageUrl\": imageResult,
+                                    \"itemUrl\": itemUrl
+                                }
+                            );
+                        }
+
+                            return data;
+                        ");
 
         $driver->quit();
-        return [];
+        unset($driver);
+
+        return array_map(function ($rawItem) {
+            return new ItemDto(
+                $rawItem->title,
+                $rawItem->itemUrl,
+                $rawItem->imageUrl,
+                $rawItem->price);
+        }, json_decode(json_encode($allProducts)));
     }
 }
-
-//$client = new Client(
-//    ['verify' => false]
-//);
-//$response = $client->get(self::SEARCH_PATH . "?text=$query");
-//$html = $response->getBody();
-//$html = str_replace('/captcha_smart', 'https://yandex.ru/captcha_smart', $html);
-//
-//$html = str_replace('crossorigin', '', $html);
-//echo $html;
-////$domModel = HtmlDomParser::file_get_html();
-////dd($domModel);
-//// ->find('div[data-auto=snippet-title]')
-//return [];
