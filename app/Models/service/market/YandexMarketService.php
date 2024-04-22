@@ -48,6 +48,8 @@ class YandexMarketService extends MarketplaceService
         $driver->get(self::SEARCH_PATH . "?text=$query");
 
         $allProducts = $driver->executeScript("
+                        var block = document.querySelector('[data-auto=\"search-vendor-incut\"]');
+                        if (block !== null) { block.remove(); }
 
                         var productSnippets = document.querySelectorAll('[data-baobab-name=\"productSnippet\"]');
 
@@ -58,21 +60,29 @@ class YandexMarketService extends MarketplaceService
 
                         for (let i = 0; i < 10; i++) {
 
-                                var isFromWhiteBox = false;
-
                                 var elem = productSnippets[i].firstChild.firstChild.children;
 
-                                if (elem === null) {
-                                    isFromWhiteBox = true;
+                                if (!elem || elem.length == 0) {
                                     elem = productSnippets[i].firstChild.children.item(1).children;
                                 }
 
-                                if (!isFromWhiteBox) {
+                                var imageParent = elem.item(0);
 
-                                    var imageParent = elem.item(0);
+                                if (imageParent !== null && imageParent.firstChild !== null) {
 
-                                    var imageDivs = imageParent.firstChild.firstChild.children.item(0);
-                                    var imageResult = imageDivs.children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).children.item(0).src
+                                    var imageDivs = imageParent.firstChild.firstChild;
+
+                                    if (imageDivs.children.item(0).tagName.toLowerCase() == 'script') {
+                                        imageDivs = imageDivs.children.item(1);
+                                    } else {
+                                        imageDivs = imageDivs.children.item(0);
+                                    }
+
+                                    var imgAndVideoContainer = imageDivs.children.item(0).children.item(0).children.item(0).children.item(0).children.item(0);
+
+                                    var imageResult = imgAndVideoContainer.children.item(0).tagName.toLowerCase() === 'img'
+                                                      ? imgAndVideoContainer.children.item(0).src
+                                                      : imgAndVideoContainer.children.item(1).src;
 
                                     var titleParent = elem.item(1);
                                     var a = titleParent.firstChild.firstChild.firstChild;
@@ -80,38 +90,18 @@ class YandexMarketService extends MarketplaceService
                                     var title = a.firstChild.innerHTML;
 
                                     var priceParent = elem.item(2);
-                                    var price = priceParent.children.item(1).firstChild.firstChild.firstChild.firstChild.firstChild.children.item(1).firstChild.firstChild.innerHTML;
 
-                                    data.push(
-                                    {
-                                         \"title\": title,
-                                         \"price\": price,
-                                         \"imageUrl\": imageResult,
-                                         \"itemUrl\": itemUrl
+                                    if (priceParent.children.item(1)) {
+                                        // с картой Пэй
+                                        var price = priceParent.children.item(1).firstChild.firstChild.firstChild.firstChild.firstChild.children.item(1).firstChild.firstChild.innerHTML;
+                                        data.push(
+                                        {
+                                             \"title\": title,
+                                             \"price\": price,
+                                             \"imageUrl\": imageResult,
+                                             \"itemUrl\": itemUrl
+                                        });
                                     }
-                                    );
-                                } else {
-
-                                    var imageParent = elem.item(0);
-
-                                    var titleParent = elem.item(1);
-                                    var title = titleParent.firstChild.firstChild.firstChild.firstChild.innerHTML;
-                                    var itemUrl = productSnippets[i].firstChild.children.item(1).href;
-
-                                    var priceParent = elem.item(1);
-                                    var price = priceParent.firstChild.firstChild.firstChild.firstChild.innerHTML;
-
-                                    var imageDivs = imageParent.firstChild.firstChild.firstChild.children.item(1);
-                                    var imageResult = imageDivs.src;
-
-                                    data.push(
-                                    {
-                                         \"title\": title,
-                                         \"price\": price,
-                                         \"imageUrl\": imageResult,
-                                         \"itemUrl\": itemUrl
-                                     }
-                                    );
                                 }
                         }
                         return data;
