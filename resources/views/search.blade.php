@@ -13,6 +13,11 @@
                     <input id="search__input" class="form-control" type="text" name="query"
                            placeholder="Что ещё поищем?">
                 </form>
+
+                <p style="font-size: 18px;">Ещё чуть-чуть! Получаем товары с <strong>Marketplace Name</strong></p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #f9900e;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
 
             <br>

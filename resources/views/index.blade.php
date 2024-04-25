@@ -57,8 +57,11 @@
 
             <br>
 
-            <form action="search" class="search__form">
-                <input id="search__input" class="form-control" type="text" name="query" placeholder="Что поискать?">
+            <form action="search" class="search__form" style="width: 100%;">
+                <div class="row">
+                    <input id="search__input" class="form-control" type="text" name="query" placeholder="Что поискать?" style="width: 80%;">
+                    <button class="btn" type="submit" style="width: 19%; margin-left: 1%; background-color: #f9900e; color: white; font-size: 21px; font-family: 'Roboto', sans-serif;">Поиск</button>
+                </div>
             </form>
         </div>
     </div>
