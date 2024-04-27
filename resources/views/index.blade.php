@@ -11,8 +11,6 @@
                 </p>
             </div>
 
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-
             <div class="container">
                 <div class="row ">
                     <div class="col-xl-6 col-lg-6">
@@ -60,6 +58,7 @@
             <form action="search" class="search__form" style="width: 100%;">
                 <div class="row">
                     <input id="search__input" class="form-control" type="text" name="query" placeholder="Что поискать?" style="width: 80%;">
+                    <input type="hidden" name="filters" value="all">
                     <button class="btn" type="submit" style="width: 19%; margin-left: 1%; background-color: #f9900e; color: white; font-size: 21px; font-family: 'Roboto', sans-serif;">Поиск</button>
                 </div>
             </form>

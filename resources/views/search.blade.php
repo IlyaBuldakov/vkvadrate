@@ -9,12 +9,24 @@
                 <p class="mb-5">
                     Результаты поиска
                 </p>
-                <form action="search" class="search__form">
-                    <input id="search__input" class="form-control" type="text" name="query"
-                           placeholder="Что ещё поищем?">
+                <form action="search" class="search__form" style="width: 100%;">
+                    <div class="row">
+                        <input id="search__input" class="form-control" type="text" name="query" placeholder="Что поискать?" style="width: 80%;">
+                        <input type="hidden" name="filters" value="all">
+                        <button class="btn" type="submit" style="width: 19%; margin-left: 1%; background-color: #f9900e; color: white; font-size: 21px; font-family: 'Roboto', sans-serif;">Поиск</button>
+                    </div>
                 </form>
 
-                <p style="font-size: 18px;">Ещё чуть-чуть! Получаем товары с <strong>Marketplace Name</strong></p>
+                <div class="container">
+                    <span class="form-text marketplace__button__text">Искать на:</span>
+                    <div class="row marketplace__button_box">
+                            <button class="btn marketplace__button" type="submit" onclick="marketplaceFilterButtonAction(this)" enabled>SimaLand</button>
+                            <button class="btn marketplace__button" type="submit" onclick="marketplaceFilterButtonAction(this)" enabled>Wildberries</button>
+                            <button class="btn marketplace__button" type="submit" onclick="marketplaceFilterButtonAction(this)" enabled>YandexMarket</button>
+                    </div>
+                </div>
+
+                <p class="marketplace__button__text" style="color: #171717">Ещё чуть-чуть! Получаем товары с <span id="marketplace_name"></span></p>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #f9900e;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -22,39 +34,7 @@
 
             <br>
 
-            <div class="row pb-5 mb-4">
-                @foreach($marketplacesResults as $marketplacesResult)
-                    @foreach($marketplacesResult->getItems() as $item)
-                        <div class="col-lg-4 col-md-6" style="margin-bottom: 20px">
-                            <div class="card rounded shadow-sm border-0 mb-5 h-100">
-                                <div class="card-body p-4"><img
-                                        src="{{ $item->getPhotoUrl() }}" alt=""
-                                        class="img-fluid d-block mx-auto mb-3">
-                                    <h5><a href="{{ $item->getItemUrl() }}"
-                                           class="text-dark">{{ $item->getName() }}</a></h5>
-                                    <p class="small text-muted font-italic">
-                                        Текст для описания товара
-                                    </p>
-                                    <div class="market__box float-start">
-                                        <div class="row">
-                                            <img src="{{ $marketplacesResult->getLogoPath() }}"
-                                                 style="width: 75px !important; height: 45px !important;" alt="">
-                                            <div class="col">
-                                                <p class="small text-muted font-italic"
-                                                   style="margin-top: 0.65rem !important">
-                                                    {{ $marketplacesResult->getSign() }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="price__box float-end">
-                                        <h4>{{ $item->getPrice() }} ₽</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @endforeach
+            <div class="row pb-5 mb-4" id="basket">
             </div>
         </div>
     </div>
