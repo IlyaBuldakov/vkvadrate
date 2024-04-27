@@ -11,7 +11,7 @@ class SimaLandService extends MarketplaceService
 {
     private const SEARCH_PATH = 'https://www.sima-land.ru/api/v3/item/?page_type=search';
 
-    private const SIMA_API_KEY_HEADER = 'x-api-key: 8de4c439f49586e3ac53a134cb0e15dd61825b1c0dba9d55b86087b28d4e4b799c6e1ecfc213f16b47b723f7e71157d71bdf909f1959c7e01b02d296f548ef20';
+    private const SIMA_API_KEY_HEADER = 'x-api-key: afb00b3b7a67fcf18cd11262201a4110af0402cbed1a68eef2ca9bdf1245505871c6979af21b159f280ce33b343390a05b544e4991dd20643db2517e2721b560';
 
     protected const LOGO_EXTENSION = '.png';
 

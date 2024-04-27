@@ -3,15 +3,9 @@
 namespace App\Models\service\market;
 
 use App\Models\dto\ItemDto;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Exception\NoSuchWindowException;
-use Facebook\WebDriver\Exception\SessionNotCreatedException;
 use Facebook\WebDriver\Firefox\FirefoxDriver;
 use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\WebDriverBy;
-use GuzzleHttp\Client;
 
 class YandexMarketService extends MarketplaceService
 {
@@ -59,7 +53,7 @@ class YandexMarketService extends MarketplaceService
                         let upperBound = count <= 10 ? count : 10;
 
                         for (let i = 0; i < 10; i++) {
-
+                            if (productSnippets[i]) {
                                 var elem = productSnippets[i].firstChild.firstChild.children;
 
                                 if (!elem || elem.length == 0) {
@@ -103,6 +97,7 @@ class YandexMarketService extends MarketplaceService
                                         });
                                     }
                                 }
+                            }
                         }
                         return data;
                         ");

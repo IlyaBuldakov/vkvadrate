@@ -26,8 +26,6 @@ class WildberriesService extends MarketplaceService
             ]
         );
 
-        $query = $_GET['query'];
-
         $response = $client->get
         (
             self::SEARCH_PATH . "&query=$query" . '&resultset=catalog&limit=10'
@@ -36,7 +34,7 @@ class WildberriesService extends MarketplaceService
         $jsonObject = json_decode($response->getBody());
 
         return array_map(function ($rawItem) {
-            $price = isset($rawItem->sizes[0]->price) ? $rawItem->sizes[0]->price->total : $price = $rawItem->priceU;
+            $price = isset($rawItem->sizes[0]->price) ? $rawItem->sizes[0]->price->total : $rawItem->priceU;
             return new ItemDto(
                 $rawItem->name,
                 'https://www.wildberries.ru/catalog/' . $rawItem->id . '/detail.aspx',
@@ -63,7 +61,11 @@ class WildberriesService extends MarketplaceService
         else if ($vol >= 1314 && $vol <= 1601) $basketNum = '10';
         else if ($vol >= 1602 && $vol <= 1655) $basketNum = '11';
         else if ($vol >= 1656 && $vol <= 1919) $basketNum = '12';
-        else $basketNum = '13';
+        else if ($vol >= 1920 && $vol <= 2045) $basketNum = '13';
+        else if ($vol >= 2046 && $vol <= 2189) $basketNum = '14';
+        else if ($vol >= 2091 && $vol <= 2405) $basketNum = '15';
+        else if ($vol >= 2406 && $vol <= 2621) $basketNum = '16';
+        else $basketNum = '17';
 
         return "https://basket-$basketNum.wbbasket.ru/vol$vol/part$part/$id/images/c516x688/1.webp";
     }
