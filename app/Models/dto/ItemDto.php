@@ -8,13 +8,13 @@ namespace App\Models\dto;
 class ItemDto
 {
 
-    private string $name;
+    public string $name;
 
-    private string $itemUrl;
+    public string $itemUrl;
 
-    private string $photoUrl;
+    public string $photoUrl;
 
-    private string $price;
+    public string $price;
 
     /**
      * @param string $name

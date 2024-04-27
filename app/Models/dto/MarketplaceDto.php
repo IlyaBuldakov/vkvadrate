@@ -8,17 +8,22 @@ namespace App\Models\dto;
  */
 class MarketplaceDto
 {
-    private string $logoPath;
+    public string $logoPath;
 
-    private array $items;
+    public array $items;
 
-    private string $sign;
+    public string $sign;
 
     public function __construct(string $logoPath, array $items, string $sign)
     {
         $this->logoPath = $logoPath;
         $this->items = $items;
         $this->sign = $sign;
+    }
+
+    public function __toString(): string
+    {
+        return json_encode($this);
     }
 
     /**
