@@ -20,30 +20,29 @@ class WildberriesService extends MarketplaceService
 
     public function search(string $query): array
     {
-        $client = new \GuzzleHttp\Client(
-            [
-                'verify' => false
-            ]
-        );
+        $jsonObject = parent::proxyRequest(self::SEARCH_PATH . "&query=$query" . '&resultset=catalog&limit=10');
 
-        $response = $client->get
-        (
-            self::SEARCH_PATH . "&query=$query" . '&resultset=catalog&limit=10'
-        );
+        if (isset($jsonObject->shardKey) && $jsonObject->shardKey === 'blackhole') {
+            var_dump('Wildberries / Blackhole detected');
+            return [];
+        }
 
-        $jsonObject = json_decode($response->getBody());
-
-        return array_map(function ($rawItem) {
-            $price = isset($rawItem->sizes[0]->price) ? $rawItem->sizes[0]->price->total : $rawItem->priceU;
-            return new ItemDto(
-                $rawItem->name,
-                'https://www.wildberries.ru/catalog/' . $rawItem->id . '/detail.aspx',
-                $this->findPhotoUrlInBasket($rawItem),
-                $price / 100);
-        }, $jsonObject->data->products);
+        if (isset($jsonObject->data)) {
+            return array_map(function ($rawItem) {
+                $price = isset($rawItem->sizes[0]->price) ? $rawItem->sizes[0]->price->total : $rawItem->priceU;
+                return new ItemDto(
+                    $rawItem->name,
+                    'https://www.wildberries.ru/catalog/' . $rawItem->id . '/detail.aspx',
+                    $this->findPhotoUrlInBasket($rawItem),
+                    $price / 100);
+            }, $jsonObject->data->products);
+        } else {
+            return [];
+        }
     }
 
-    private function findPhotoUrlInBasket($item): string
+    private
+    function findPhotoUrlInBasket($item): string
     {
         $part = intval($item->id / 1000);
         $vol = intval($part / 100);

@@ -2,11 +2,20 @@
 
 namespace App\Models\service\market;
 
+use GuzzleHttp\RequestOptions;
+
 /**
  * Базовый класс для сервиса маркетплейса.
  */
 abstract class MarketplaceService
 {
+    private string $proxy;
+
+    public function __construct()
+    {
+        $this->proxy = 'http://localhost' . ':2346';
+    }
+
     /**
      * Стандартный путь до логотипа.
      */
@@ -36,4 +45,31 @@ abstract class MarketplaceService
      * @return array Массив подходящих товаров.
      */
     public abstract function search(string $query): array;
+
+    public function proxyRequest($url)
+    {
+        $proxyStorage = [
+            'user177273:ez3pc5@45.88.211.188:5759',
+            'WToXFe:eFG2mj@194.124.50.95:8000'
+        ];
+
+        $proxies = [
+            'http' => $proxyStorage[array_rand($proxyStorage)],
+            'https' => $proxyStorage[array_rand($proxyStorage)],
+        ];
+
+        $client = new \GuzzleHttp\Client(
+            [
+                RequestOptions::PROXY => $proxies,
+                RequestOptions::VERIFY => false,
+                RequestOptions::TIMEOUT => 30,
+            ]
+        );
+
+        $response = $client->get($url);
+
+        var_dump(json_decode($response->getBody()));
+
+        return json_decode($response->getBody());
+    }
 }

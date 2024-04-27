@@ -39,7 +39,18 @@ class YandexMarketService extends MarketplaceService
     public function search(string $query): array
     {
         $driver = constant('DRIVER');
+
+        if (!$driver) {
+            var_dump('Яндекс / Драйвер не создан, создаём');
+            $this->__construct();
+        }
+
         $driver->get(self::SEARCH_PATH . "?text=$query");
+
+        var_dump('Яндекс / Зашел на страницу');
+
+        var_dump($driver->getWindowHandles());
+        $driver->takeScreenshot('photoLog');
 
         $allProducts = $driver->executeScript("
                         var block = document.querySelector('[data-auto=\"search-vendor-incut\"]');
@@ -102,10 +113,10 @@ class YandexMarketService extends MarketplaceService
                         return data;
                         ");
 
-        $driver->quit();
-        unset($driver);
+        var_dump('Яндекс / Безголовый браузер выполнил скрипт для парсинга');
 
         return array_map(function ($rawItem) {
+            var_dump('Яндекс / Рисует товар');
             return new ItemDto(
                 $rawItem->title,
                 $rawItem->itemUrl,
