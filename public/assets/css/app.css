@@ -187,3 +187,30 @@ input {
 .loaded .preloader {
     display: none;
 }
+
+.marketplace__button {
+    width: 18%;
+    background-color: #f9900e;
+    color: white;
+    font-size: 17px;
+    font-family: 'Roboto', sans-serif;
+    margin: 10px 5px 30px 5px;
+}
+
+.marketplace__button__text {
+    color: #8d8d8d;
+    font-size: 17px;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 5px;
+}
+
+.filter_submit__button {
+    border: 1px solid #f9900e;
+    color: #171717;
+    width: 50px;
+    background-color: white;
+}
+
+.filter_submit__button:hover {
+    border: 1px solid #f9900e;
+}
