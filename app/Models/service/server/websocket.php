@@ -1,12 +1,11 @@
 <?php
 
 use App\Models\dto\MarketplaceDto;
-use App\Models\service\market\SimaLandService;
 use App\Models\service\market\WildberriesService;
 use App\Models\service\market\YandexMarketService;
 use Workerman\Worker;
 
-require_once '../../../vendor/autoload.php';
+require_once '../../../../vendor/autoload.php';
 
 $marketplaceServices =
     [
@@ -25,7 +24,6 @@ $ws_worker->onMessage = function ($connection, $data) use ($marketplaceServices)
     foreach ($marketplaceServices as $marketplaceService) {
         if (in_array($marketplaceService->getSign(), explode(',', $preparedData[0])) ||
             $preparedData[0] === 'all') {
-            var_dump(1);
             $connection->send(
                 (new MarketplaceDto(
                     $marketplaceService->getLogoPath(), $marketplaceService->search($preparedData[1]), $marketplaceService->getSign()
